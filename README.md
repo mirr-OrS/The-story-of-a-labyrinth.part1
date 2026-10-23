@@ -4,11 +4,18 @@ Questa prima parte usa il terminale per la grafica con codici ANSI e disegni ASC
 
 > \- di Niki  
 
+# Useful info / Informazioni utili
+[ANSI escape codes](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797) is how I will render the graphics,  
+it isn't important for you but it is for me so i will keep it here as reference  
+
+```
+ /\_ _/\
+( O w O ) <(Well, isn't grrreat that I'm a cat :3 ?)
+ +—————+
+```
+
 # What is TSoaL?
 The Story of a Labyrinth (TSoaL) is a small RPG introducing and setting up the stage for TSoaL.part2;  
 This first part uses the terminal to display graphics with ANSI escape codes and ASCII art.
 
 > \- by Niki
-
-# Useful info / Informazioni utili
-[ANSI escape codes](https://gist.github.com/fnky/458719343aabd01cfb17a3a4f7296797)
