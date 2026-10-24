@@ -4,7 +4,7 @@
 #define tree 32
 #define NoGo 64
 #define playerIsHere 128
-// models and all that for tiles will be specified in ID part, first 5 bits that will give ID
+// models and all that for tiles will be specified in ID part, first 5 bits
 
 void renderWorld(unsigned char (*worldMap)[], int playerX, int playerY);
 
