@@ -1,4 +1,8 @@
 #include <stdio.h>
+#include <math.h>
+
+#define MAP_SIZE 256
+#define HALFPOINT 127
 
 // in this section i define attributes a tile in the world can have
 #define playerIsHere 64
@@ -11,14 +15,31 @@ typedef struct{
 }tile;
 // each tile is 6x12
 
-void renderWorld(unsigned char (*worldMap)[256], int playerX, int playerY);
+void generateMap(unsigned char (*worldMap)[MAP_SIZE]);
+void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY);
 
 int main(){
-  unsigned char worldMap[256][256] = {0}; // write your world i guess
+  unsigned char worldMap[MAP_SIZE][MAP_SIZE] = {0}; // write your world i guess
+  generateMap(worldMap);
   return 0;
 }
 
-void renderWorld(unsigned char (*worldMap)[256], int playerX, int playerY){
+void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
+  int dx = 0, dy = 0, distance = 0, ID = 0;
+
+  for(int y = 0; y < MAP_SIZE; y++){
+    for(int x = 0; x < MAP_SIZE; x++){
+      dx = x - HALFPOINT;
+      dy = y - HALFPOINT;
+
+      distance = (int)sqrt(dx * dx + dy * dy);
+      ID = distance % 64;
+      worldMap[y][x] = (unsigned char)ID;
+    }
+  }
+}
+
+void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
   // does nothing and dies
 }
 
