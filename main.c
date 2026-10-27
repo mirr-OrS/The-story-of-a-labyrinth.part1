@@ -21,15 +21,6 @@ void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY);
 int main(){
   unsigned char worldMap[MAP_SIZE][MAP_SIZE] = {0}; // write your world i guess
   generateMap(worldMap);
-  int count = 0;
-  for(int i = 0; i < MAP_SIZE; i++){
-    for(int j = 0; j < MAP_SIZE; j++){
-      if(worldMap[i][j]&NoGo){
-        printf("tileID: %d \ny: %d \nx: %d \n\n", worldMap[i][j], i, j);
-        count++;
-      }
-    }
-  } printf("border tiles: %d\n", count);
   return 0;
 }
 
