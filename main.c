@@ -21,6 +21,15 @@ void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY);
 int main(){
   unsigned char worldMap[MAP_SIZE][MAP_SIZE] = {0}; // write your world i guess
   generateMap(worldMap);
+  int count = 0;
+  for(int i = 0; i < MAP_SIZE; i++){
+    for(int j = 0; j < MAP_SIZE; j++){
+      if(worldMap[i][j]&NoGo){
+        printf("tileID: %d \ny: %d \nx: %d \n\n", worldMap[i][j], i, j);
+        count++;
+      }
+    }
+  } printf("border tiles: %d\n", count);
   return 0;
 }
 
@@ -34,7 +43,24 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
 
       distance = (int)sqrt(dx * dx + dy * dy);
       ID = distance % 64;
-      worldMap[y][x] = (unsigned char)ID;
+
+      switch(x){
+        case 0:
+        case 255:
+          ID |= NoGo;
+          break;
+        
+        default:
+          break;
+      } switch(y){
+        case 0:
+        case 255:
+          ID |= NoGo;
+          break;
+        
+        default:
+          break;
+      }   worldMap[y][x] = (unsigned char)ID;
     }
   }
 }
