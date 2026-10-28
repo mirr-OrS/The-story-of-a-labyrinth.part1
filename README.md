@@ -19,3 +19,12 @@ The Story of a Labyrinth (TSoaL) is a small RPG introducing and setting up the s
 This first part uses the terminal to display graphics with ANSI escape codes and ASCII art.
 
 > \- by Niki
+
+TODO:
+ - [x] Make map
+ - [ ] Render map
+ - [ ] Move
+ - [ ] Spawn NPCs
+ - [ ] Talk with NPCs
+ - [ ] Labyrinth creator & editor
+ - [ ] Format, store and load labyrinths in the *.lost format
