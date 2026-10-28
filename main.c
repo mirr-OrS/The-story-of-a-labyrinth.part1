@@ -70,5 +70,4 @@ main character, generic NPC and Minotaur
 ###                   ###
 
 NPC and MC             Minotuar
-(change color scheme)
 */
