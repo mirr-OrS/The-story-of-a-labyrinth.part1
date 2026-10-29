@@ -4,6 +4,7 @@
 
 #define MAP_SIZE 256
 #define HALFPOINT 127
+#define MAX_MENU_CHOICES 2
 
 // in this section i define attributes a tile in the world can have
 #define playerIsHere 64
@@ -32,7 +33,7 @@ int main(){
   start_color(); raw(); noecho(); keypad(stdscr, TRUE);
   clear();
 
-  WINDOW *menuWIN = newwin(8, 64, 1, 1); // newwin(height, width, starty, startx)
+  WINDOW *menuWIN = newwin(9, 64, 0, 0); // newwin(height, width, starty, startx)
   if (menuWIN == NULL) {                 // >> Labyrinth Editor    (<-- highest possible
     endwin();                            //                           number of characters on the window)
     printf("Failed to create menu window. Check terminal dimensions.\n");
@@ -91,11 +92,11 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
 
 int mainMenu(WINDOW *windw){
   keypad(windw, TRUE);
-  //box(windw, 0, 0);
+  box(windw, 0, 0);
   init_pair(1, COLOR_GREEN, COLOR_BLACK);
-  wattron(windw, COLOR_PAIR(1));
+  wattron(windw, COLOR_PAIR(1) | A_BOLD);
   /*
-     ——<( The Story of a Labyrinth )>——
+     — — <( The Story of a Labyrinth )> — —
               -| MAIN MENU |-
       Play
 
@@ -103,14 +104,42 @@ int mainMenu(WINDOW *windw){
 
       Quit
   */
-  int opt = 2;
-  mvwprintw(windw,0, 13, "- - <( The Story of a Labyrinth )> - -");
-  mvwprintw(windw, 1, 24, "-| MAIN MENU |-");  // window - row - column - string
-  mvwprintw(windw, 2, 1, " >> Play");
-  mvwprintw(windw, 4, 4, "Labyrinth Editor");
-  mvwprintw(windw, 6, 4, "Quit");
+  int opt = 2; int ch = 0;
+  mvwprintw(windw,1, 13, "- - <( The Story of a Labyrinth )> - -");
+  mvwprintw(windw, 2, 24, "-| MAIN MENU |-");  // window - row - column - string
+  mvwprintw(windw, 3, 2, ">> Play");
+  mvwprintw(windw, 5, 5, "Labyrinth Editor");
+  mvwprintw(windw, 7, 5, "Quit");
   wrefresh(windw);
-  wgetch(windw);
+  while(ch != '\n'){
+    ch = wgetch(windw);
+    switch(ch){
+      case KEY_UP:
+        if(opt == MAX_MENU_CHOICES){
+          opt = 0;
+          mvwprintw(windw, 3, 2, "  ");
+          mvwprintw(windw, 7, 2, ">>");
+          wrefresh(windw);
+        } else{
+          opt++;  // 7 - 2*opt
+          mvwprintw(windw, (9 - (2 * opt)), 2, "  ");
+          mvwprintw(windw, (7 - (2 * opt)), 2, ">>");
+          wrefresh(windw);
+        } break;
+      case KEY_DOWN:
+        if(opt == 0){
+          opt = MAX_MENU_CHOICES;
+          mvwprintw(windw, 7, 2, "  ");
+          mvwprintw(windw, 3, 2, ">>");
+          wrefresh(windw);
+        } else{
+          opt--;
+          mvwprintw(windw, (7 - (2 * opt)), 2, ">>");
+          mvwprintw(windw, (5 - (2 * opt)), 2, "  ");
+          wrefresh(windw);
+        } break;
+    }
+  }
   delwin(windw);
   return opt;
 }
