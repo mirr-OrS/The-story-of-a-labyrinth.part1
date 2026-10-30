@@ -46,8 +46,18 @@ int main(){
       printf("Exiting the program... \033[?25h \n");
       return 0;
     
-    default:
+    case 1:
+      // **[ createLabyrinth() FUNCTION CALL ]**
       break;
+
+    case 2:
+      // **[ startGame FUNCTION CALL ]**
+      break;
+    
+    default:
+      delwin(menuWIN); endwin();
+      printf("NoN EXISTENT OPTION CHOSEN IN THE MENU\nExiting the program... \033[?25h \n");
+      return 0;
   }
   unsigned char worldMap[MAP_SIZE][MAP_SIZE] = {0};
   generateMap(worldMap);
@@ -134,8 +144,8 @@ int mainMenu(WINDOW *windw){
           wrefresh(windw);
         } else{
           opt--;
-          mvwprintw(windw, (7 - (2 * opt)), 2, ">>");
           mvwprintw(windw, (5 - (2 * opt)), 2, "  ");
+          mvwprintw(windw, (7 - (2 * opt)), 2, ">>");
           wrefresh(windw);
         } break;
     }
