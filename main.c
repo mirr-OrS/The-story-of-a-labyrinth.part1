@@ -17,12 +17,12 @@ typedef struct{
 }tile;
 // each tile is 6x12
 
+void createLabyrinth();
 int mainMenu(WINDOW *windw);
 void generateMap(unsigned char (*worldMap)[MAP_SIZE]);
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY);
 
 int main(){
-
   printf("\033[?25l"); // hide cursor
   initscr();
   if(has_colors() == FALSE){
@@ -42,12 +42,12 @@ int main(){
   int choice = mainMenu(menuWIN);
   switch(choice){
     case 0:
-      delwin(menuWIN); endwin();
+      endwin();
       printf("Exiting the program... \033[?25h \n");
       return 0;
     
     case 1:
-      // **[ createLabyrinth() FUNCTION CALL ]**
+      createLabyrinth();
       break;
 
     case 2:
@@ -55,7 +55,7 @@ int main(){
       break;
     
     default:
-      delwin(menuWIN); endwin();
+      endwin();
       printf("NoN EXISTENT OPTION CHOSEN IN THE MENU\nExiting the program... \033[?25h \n");
       return 0;
   }
@@ -115,9 +115,11 @@ int mainMenu(WINDOW *windw){
       Quit
   */
   int opt = 2; int ch = 0;
+  char choices[MAX_MENU_CHOICES + 1][32] = {"Quit               ", "Labyrinth editor   ", "Play               "};
+  char selecc[MAX_MENU_CHOICES + 1][32] = {"Quit       OwO bye!", "Labyrinth editor ;)", "Play      have fun!"};
   mvwprintw(windw,1, 13, "- - <( The Story of a Labyrinth )> - -");
   mvwprintw(windw, 2, 24, "-| MAIN MENU |-");  // window - row - column - string
-  mvwprintw(windw, 3, 2, ">> Play");
+  mvwprintw(windw, 3, 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE);
   mvwprintw(windw, 5, 5, "Labyrinth Editor");
   mvwprintw(windw, 7, 5, "Quit");
   wrefresh(windw);
@@ -127,31 +129,42 @@ int mainMenu(WINDOW *windw){
       case KEY_UP:
         if(opt == MAX_MENU_CHOICES){
           opt = 0;
-          mvwprintw(windw, 3, 2, "  ");
-          mvwprintw(windw, 7, 2, ">>");
+          mvwprintw(windw, 3, 2, "   "); wprintw(windw, "%s", choices[MAX_MENU_CHOICES]);
+          mvwprintw(windw, 7, 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } else{
           opt++;  // 7 - 2*opt
-          mvwprintw(windw, (9 - (2 * opt)), 2, "  ");
-          mvwprintw(windw, (7 - (2 * opt)), 2, ">>");
+          mvwprintw(windw, (9 - (2 * opt)), 2, "   "); wprintw(windw, "%s", choices[opt - 1]);
+          mvwprintw(windw, (7 - (2 * opt)), 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } break;
       case KEY_DOWN:
         if(opt == 0){
           opt = MAX_MENU_CHOICES;
-          mvwprintw(windw, 7, 2, "  ");
-          mvwprintw(windw, 3, 2, ">>");
+          mvwprintw(windw, 7, 2, "   "); wprintw(windw, "%s", choices[0]);
+          mvwprintw(windw, 3, 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } else{
           opt--;
-          mvwprintw(windw, (5 - (2 * opt)), 2, "  ");
-          mvwprintw(windw, (7 - (2 * opt)), 2, ">>");
+          mvwprintw(windw, (5 - (2 * opt)), 2, "   "); wprintw(windw, "%s", choices[opt + 1]);
+          mvwprintw(windw, (7 - (2 * opt)), 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } break;
     }
   }
   delwin(windw);
   return opt;
+}
+
+void createLabyrinth(){
+  short unsigned int labyrinth[64][64];
+  int x, y;
+  WINDOW *LABYRINTH = newwin(16, 64, 0, 0); // newwin(height, width, starty, startx)
+
+  // 4. Check window creation
+  // 5. Configure ncurses input
+  // 6. Draw window border
+  // 7. Refresh window
 }
 
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
