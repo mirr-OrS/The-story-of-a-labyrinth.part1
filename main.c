@@ -102,12 +102,13 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
 
 int mainMenu(WINDOW *windw){
   keypad(windw, TRUE);
-  box(windw, 0, 0);
+  //box(windw, 0, 0);
   init_pair(1, COLOR_GREEN, COLOR_BLACK);
   wattron(windw, COLOR_PAIR(1) | A_BOLD);
   /*
      — — <( The Story of a Labyrinth )> — —
               -| MAIN MENU |-
+
       Play
 
    >> Labyrinth Editor
@@ -115,13 +116,13 @@ int mainMenu(WINDOW *windw){
       Quit
   */
   int opt = 2; int ch = 0;
-  char choices[MAX_MENU_CHOICES + 1][32] = {"Quit               ", "Labyrinth editor   ", "Play               "};
-  char selecc[MAX_MENU_CHOICES + 1][32] = {"Quit       OwO bye!", "Labyrinth editor ;)", "Play      have fun!"};
-  mvwprintw(windw,1, 13, "- - <( The Story of a Labyrinth )> - -");
-  mvwprintw(windw, 2, 24, "-| MAIN MENU |-");  // window - row - column - string
-  mvwprintw(windw, 3, 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE);
-  mvwprintw(windw, 5, 5, "Labyrinth Editor");
-  mvwprintw(windw, 7, 5, "Quit");
+  char choices[MAX_MENU_CHOICES + 1][32] = {"Quit                ", "Labyrinth editor    ", "Play                "};
+  char selecc[MAX_MENU_CHOICES + 1][32] = {"Quit        OwO bye!", "Labyrinth editor  ;)", "Play       have fun!"};
+  mvwprintw(windw, 0, 13, "- - <( The Story of a Labyrinth )> - -");
+  mvwprintw(windw, 1, 24, "-| MAIN MENU |-");  // window - row - column - string
+  mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE);
+  mvwprintw(windw, 5, 4, "Labyrinth Editor");
+  mvwprintw(windw, 7, 4, "Quit");
   wrefresh(windw);
   while(ch != '\n'){
     ch = wgetch(windw);
@@ -129,25 +130,25 @@ int mainMenu(WINDOW *windw){
       case KEY_UP:
         if(opt == MAX_MENU_CHOICES){
           opt = 0;
-          mvwprintw(windw, 3, 2, "   "); wprintw(windw, "%s", choices[MAX_MENU_CHOICES]);
-          mvwprintw(windw, 7, 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, 3, 1, "   "); wprintw(windw, "%s", choices[MAX_MENU_CHOICES]);
+          mvwprintw(windw, 7, 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } else{
           opt++;  // 7 - 2*opt
-          mvwprintw(windw, (9 - (2 * opt)), 2, "   "); wprintw(windw, "%s", choices[opt - 1]);
-          mvwprintw(windw, (7 - (2 * opt)), 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, (9 - (2 * opt)), 1, "   "); wprintw(windw, "%s", choices[opt - 1]);
+          mvwprintw(windw, (7 - (2 * opt)), 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } break;
       case KEY_DOWN:
         if(opt == 0){
           opt = MAX_MENU_CHOICES;
-          mvwprintw(windw, 7, 2, "   "); wprintw(windw, "%s", choices[0]);
-          mvwprintw(windw, 3, 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, 7, 1, "   "); wprintw(windw, "%s", choices[0]);
+          mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } else{
           opt--;
-          mvwprintw(windw, (5 - (2 * opt)), 2, "   "); wprintw(windw, "%s", choices[opt + 1]);
-          mvwprintw(windw, (7 - (2 * opt)), 2, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, (5 - (2 * opt)), 1, "   "); wprintw(windw, "%s", choices[opt + 1]);
+          mvwprintw(windw, (7 - (2 * opt)), 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
           wrefresh(windw);
         } break;
     }
@@ -157,7 +158,7 @@ int mainMenu(WINDOW *windw){
 }
 
 void createLabyrinth(){
-  short unsigned int labyrinth[64][64];
+  short unsigned int labyrinth[64][64] = {0};
   int x, y;
   WINDOW *LABYRINTH = newwin(16, 64, 0, 0); // newwin(height, width, starty, startx)
 
