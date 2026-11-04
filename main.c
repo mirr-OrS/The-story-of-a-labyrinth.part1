@@ -73,7 +73,7 @@ int main(){
     
     default:
       endwin();
-      printf("NoN EXISTENT OPTION CHOSEN IN THE MENU\nExiting the program... \033[?25h \n");
+      printf("NoN EXISTENT OPTION CHOSEN IN THE MENU (How did u do that?)\nExiting the program... \033[?25h \n");
       return 0;
   }
   unsigned char worldMap[MAP_SIZE][MAP_SIZE] = {0};
@@ -138,7 +138,7 @@ int mainMenu(WINDOW *windw){
   mvwprintw(windw, 0, 13, "- - <( The Story of a Labyrinth )> - -");
   mvwprintw(windw, 1, 24, "-| MAIN MENU |-");  // window - row - column - string
   mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE);
-  mvwprintw(windw, 5, 4, "Labyrinth Editor");
+  mvwprintw(windw, 5, 4, "Labyrinth editor");
   mvwprintw(windw, 7, 4, "Quit");
   wrefresh(windw);
   while(ch != '\n'){
