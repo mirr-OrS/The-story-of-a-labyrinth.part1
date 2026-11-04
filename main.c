@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ncurses.h>
 #include <math.h>
 
 #define MAP_SIZE 256
@@ -32,7 +33,7 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
       dx = x - HALFPOINT;
       dy = y - HALFPOINT;
 
-      distance = (int)sqrt(dx * dx + dy * dy);
+      distance = (int) sqrt(dx * dx + dy * dy);
       ID = distance % 64;
 
       switch(x){
@@ -57,7 +58,8 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
 }
 
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
-  // does nothing and dies
+  initscr();
+  raw(); noecho(); keypad(stdscr, TRUE);
 }
 
 /*
