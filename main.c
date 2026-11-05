@@ -6,11 +6,25 @@
 #define HALFPOINT 127
 #define EDITOR_SIZE 64
 #define MAX_MENU_CHOICES 2
+#define VIEW_WIDTH  32
+#define VIEW_HEIGHT 16
+
+// color section, i define colors here :)
+#define COLOR_FLOOR 8
+#define COLOR_WALL 9
+#define COLOR_PIT 10
+#define COLOR_TRAP 11
 
 // in this section i define attributes a tile in the world can have
 #define playerIsHere 64
 #define NoGo 128
 // models and all that for tiles will be specified in ID part, first 5 bits
+
+// this is to avoid confusion (my own :P) in the renderLabrnth() function
+#define Floor 0
+#define Wall 1
+#define Pit 2
+#define Trap 3
 
 typedef enum{
   FLOOR,
@@ -33,9 +47,10 @@ typedef struct{
 }tile;
 // each tile is 6x12
 
+void renderLabrnth(int curseX, int curseY, int viewX, int viewY);
 void createLabyrinth();
 int mainMenu(WINDOW *windw);
-void mvwprintpx(WINDOW *windw, int x, int y, int colorPair, int nPXELS);
+void mvwprintpx(WINDOW *windw, int x, int y, int colorPair, char decor, int nPXELS);
 void generateMap(unsigned char (*worldMap)[MAP_SIZE]);
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY);
 
@@ -120,8 +135,8 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
 int mainMenu(WINDOW *windw){
   keypad(windw, TRUE);
   //box(windw, 0, 0);
-  init_pair(1, COLOR_GREEN, COLOR_BLACK);
-  wattron(windw, COLOR_PAIR(1) | A_BOLD);
+  init_pair(5, COLOR_GREEN, COLOR_BLACK);
+  wattron(windw, COLOR_PAIR(5) | A_BOLD);
   /*
      — — <( The Story of a Labyrinth )> — —
               -| MAIN MENU |-
@@ -174,11 +189,11 @@ int mainMenu(WINDOW *windw){
   return opt;
 }
 
-void mvwprintpx(WINDOW *windw, int y, int x, int colorPair, int nPXELS){
+void mvwprintpx(WINDOW *windw, int y, int x, int colorPair, char decor, int nPXELS){
   wmove(windw, y, 2 * x);
   wattron(windw, COLOR_PAIR(colorPair)); // turn on bacground color, foreground is mostly useless
   for(int i = 0; i < nPXELS; i++){
-    wprintw(windw, "  "); // 2 spaces make a pixel and background is its color
+    wprintw(windw, "%c%c", decor, decor); // 2 spaces make a pixel and background is its color
   } wattroff(windw, COLOR_PAIR(colorPair)); // turn off bacground color
 }
 
@@ -194,6 +209,8 @@ void createLabyrinth(){
   keypad(labrnthWIN, TRUE);
   int ch = 0; short unsigned int saved = FALSE; char name[64] = "\0";
   while(TRUE){
+
+
     ch = wgetch(labrnthWIN);
 
     switch(ch){
@@ -249,9 +266,16 @@ void createLabyrinth(){
   }
 }
 
+void renderLabrnth(int curseX, int curseY, int viewX, int viewY){
+  init_color(COLOR_FLOOR, 404,  490, 718); init_pair(Floor, COLOR_BLACK, COLOR_FLOOR);
+  init_color(COLOR_WALL,  271,  294, 400); init_pair(Wall,  COLOR_BLACK,  COLOR_WALL);
+  init_color(COLOR_PIT,     0,    0,   0); init_pair(Pit,   COLOR_BLACK,   COLOR_PIT);
+  init_color(COLOR_TRAP,  102, 1000, 835); init_pair(Trap,  COLOR_BLACK, COLOR_TRAP);
+  int screenX = 0, screenY = 0;
+}
+
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
-  initscr();
-  raw(); noecho(); keypad(stdscr, TRUE);
+  // does nothing and dies
 }
 
 /*
