@@ -47,7 +47,7 @@ typedef struct{
 }tile;
 // each tile is 6x12
 
-void renderLabrnth(WINDOW *windw, maze_t labyrinth, int curseX, int curseY, int *viewX, int *viewY);
+void renderLabrnth(WINDOW *windw, maze_t *labyrinth, int curseX, int curseY, int *viewX, int *viewY);
 void createLabyrinth();
 int mainMenu(WINDOW *windw);
 void mvwprintpx(WINDOW *windw, int x, int y, int colorPair, char decor, int nPXELS);
@@ -266,7 +266,7 @@ void createLabyrinth(){
   }
 }
 
-void renderLabrnth(WINDOW *windw, maze_t labyrinth, int curseX, int curseY, int *viewX, int *viewY){
+void renderLabrnth(WINDOW *windw, maze_t *labyrinth, int curseX, int curseY, int *viewX, int *viewY){
   init_color(COLOR_FLOOR, 404,  490, 718); init_pair(Floor, COLOR_BLACK, COLOR_FLOOR);
   init_color(COLOR_WALL,  271,  294, 400); init_pair(Wall,  COLOR_BLACK,  COLOR_WALL);
   init_color(COLOR_PIT,     0,    0,   0); init_pair(Pit,   COLOR_WHITE,   COLOR_PIT);
@@ -278,7 +278,7 @@ void renderLabrnth(WINDOW *windw, maze_t labyrinth, int curseX, int curseY, int 
 viewX/Y is where you start drawing the screen from (ABSOLUTE POSITION)
 
 curseX/Y is where the cursor is,
-you draw it at ( (1/2)(curseX - viewX); (curseY - viewY)) coordinates
+you draw it at ((curseX - viewX); (curseY - viewY)) coordinates
 on the screen.
 
 screenX/Y is a generic variable that calculates the position of objects on screen
