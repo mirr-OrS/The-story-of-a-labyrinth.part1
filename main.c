@@ -164,8 +164,8 @@ int mainMenu(WINDOW *windw){
   mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE | A_BOLD); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE | A_BOLD);
   mvwprintw(windw, 5, 4, "Labyrinth editor");
   mvwprintw(windw, 7, 4, "Quit");
-  wrefresh(windw); //there's 5 money under the mattress, for when you need it
-  while(ch != '\n'){
+  wrefresh(windw); //there's 5 money under the mattress, for when you need it ;P
+  while(ch != '\n'){ // huh?
     ch = wgetch(windw);
     switch(ch){
       case KEY_UP:
