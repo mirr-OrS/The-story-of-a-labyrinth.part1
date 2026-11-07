@@ -26,6 +26,11 @@
 #define Pit 3
 #define Trap 4
 
+#define CTRL_UP    600
+#define CTRL_DOWN  601
+#define CTRL_RIGHT 602
+#define CTRL_LEFT  603
+
 typedef enum{
   FLOOR,
   WALL,
@@ -53,12 +58,19 @@ int mainMenu(WINDOW *windw);
 void updView(int *viewY, int *viewX, int curseY, int curseX);
 void mvwprintpx(WINDOW *windw, int x, int y, int colorPair, char decor);
 void mvwprintcrs(WINDOW *windw, int y, int x, int colorPair);
+void makeLegend(WINDOW *windw);
 void generateMap(unsigned char (*worldMap)[MAP_SIZE]);
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY);
 
 int main(){
   printf("\033[?25l"); // hide cursor
   initscr();
+
+  define_key("\033[1;5A", CTRL_UP);
+  define_key("\033[1;5B", CTRL_DOWN);
+  define_key("\033[1;5C", CTRL_RIGHT);
+  define_key("\033[1;5D", CTRL_LEFT);
+
   if(has_colors() == FALSE){
     endwin();
     printf("This terminal does not support colors! \033[?25h \n");
@@ -70,7 +82,7 @@ int main(){
   init_color(COLOR_WALL,  271,  294, 400); init_pair(Wall,  COLOR_BLACK,  COLOR_WALL);
   /*  Stuff to make this evenly spaced  */ init_pair(Pit,   COLOR_WHITE,  COLOR_BLACK);
   init_color(COLOR_TRAP,  102, 1000, 835); init_pair(Trap,  COLOR_BLACK,  COLOR_TRAP);
-  /*  Stuff to make this evenly spaced  */ init_pair(5,     COLOR_GREEN,  COLOR_BLACK);
+  /*  Stuff to make this evenly spaced  */ init_pair(5,     COLOR_GREEN,   COLOR_BLACK);
 
   WINDOW *menuWIN = newwin(9, 64, 0, 0); // newwin(height, width, starty, startx)
   if (menuWIN == NULL) {                 // >> Labyrinth Editor    (<-- highest possible
@@ -142,7 +154,7 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
 int mainMenu(WINDOW *windw){
   keypad(windw, TRUE);
   //box(windw, 0, 0);
-  wattron(windw, COLOR_PAIR(5) | A_BOLD);
+  wattron(windw, COLOR_PAIR(5));
   /*
      — — <( The Story of a Labyrinth )> — —
               -| MAIN MENU |-
@@ -158,7 +170,7 @@ int mainMenu(WINDOW *windw){
   char selecc[MAX_MENU_CHOICES + 1][32] = {"Quit        OwO bye!", "Labyrinth editor  ;)", "Play       have fun!"};
   mvwprintw(windw, 0, 13, "- - <( The Story of a Labyrinth )> - -");
   mvwprintw(windw, 1, 24, "-| MAIN MENU |-");  // window - row - column - string
-  mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE);
+  mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE | A_BOLD); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE | A_BOLD);
   mvwprintw(windw, 5, 4, "Labyrinth editor");
   mvwprintw(windw, 7, 4, "Quit");
   wrefresh(windw);
@@ -169,24 +181,24 @@ int mainMenu(WINDOW *windw){
         if(opt == MAX_MENU_CHOICES){
           opt = 0;
           mvwprintw(windw, 3, 1, "   "); wprintw(windw, "%s", choices[MAX_MENU_CHOICES]);
-          mvwprintw(windw, 7, 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, 7, 1, ">> "); wattron(windw, A_REVERSE | A_BOLD); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE | A_BOLD);
           wrefresh(windw);
         } else{
           opt++;  // 7 - 2*opt
           mvwprintw(windw, (9 - (2 * opt)), 1, "   "); wprintw(windw, "%s", choices[opt - 1]);
-          mvwprintw(windw, (7 - (2 * opt)), 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, (7 - (2 * opt)), 1, ">> "); wattron(windw, A_REVERSE | A_BOLD); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE | A_BOLD);
           wrefresh(windw);
         } break;
       case KEY_DOWN:
         if(opt == 0){
           opt = MAX_MENU_CHOICES;
           mvwprintw(windw, 7, 1, "   "); wprintw(windw, "%s", choices[0]);
-          mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE | A_BOLD); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE | A_BOLD);
           wrefresh(windw);
         } else{
           opt--;
           mvwprintw(windw, (5 - (2 * opt)), 1, "   "); wprintw(windw, "%s", choices[opt + 1]);
-          mvwprintw(windw, (7 - (2 * opt)), 1, ">> "); wattron(windw, A_REVERSE); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE);
+          mvwprintw(windw, (7 - (2 * opt)), 1, ">> "); wattron(windw, A_REVERSE | A_BOLD); wprintw(windw, "%s", selecc[opt]); wattroff(windw, A_REVERSE | A_BOLD);
           wrefresh(windw);
         } break;
     }
@@ -205,7 +217,7 @@ void mvwprintpx(WINDOW *windw, int y, int x, int colorPair, char decor){
 void mvwprintcrs(WINDOW *windw, int y, int x, int colorPair){
   wmove(windw, y, 2 * x);
   wattron(windw, COLOR_PAIR(colorPair)); // turn on bacground color, foreground is mostly useless
-  wprintw(windw, "<>"); // 2 spaces make a pixel and background is its color
+  wprintw(windw, "::"); // 2 spaces make a pixel and background is its color
   wattroff(windw, COLOR_PAIR(colorPair)); // turn off bacground color
 }
 
@@ -213,11 +225,13 @@ void createLabyrinth(){
   maze_t labyrinth = {0}; // 0 = floor, 1 = wall, wait, I'll make an enum... (it was a short unsigned int array before)
   int curseX = 0, curseY = 0, viewX = 0, viewY = 0;
   WINDOW *labrnthWIN = newwin(16, 64, 0, 0); // newwin(height, width, starty, startx)
-  if(labrnthWIN == NULL){
+  WINDOW *legend = newwin(10, 56, 16, 4);
+  if(labrnthWIN == NULL || legend == NULL){
     printw("Failed creating the new window... XP !"); // XP is closed eyes with tongue out, like dead cartoon characters
     refresh();
     return;
   }
+  makeLegend(legend);
   keypad(labrnthWIN, TRUE);
   int ch = 0; short unsigned int saved = FALSE; char name[64] = "\0";
   while(TRUE){
@@ -226,6 +240,26 @@ void createLabyrinth(){
     ch = wgetch(labrnthWIN);
 
     switch(ch){
+      case 'w':
+        if(viewY > 0) viewY--;
+        updView(&viewY, &viewX, curseY, curseX);
+        break;
+
+      case 's':
+        if(viewY < (EDITOR_SIZE - 1)) viewY++;
+        updView(&viewY, &viewX, curseY, curseX);
+        break;
+
+      case 'a':
+        if(viewX > 0) viewX--;
+        updView(&viewY, &viewX, curseY, curseX);
+        break;
+
+      case 'd':
+        if(viewX < (EDITOR_SIZE - 1)) viewX++;
+        updView(&viewY, &viewX, curseY, curseX);
+        break;
+
       case KEY_UP:
         if(curseY > 0) curseY--;
         updView(&viewY, &viewX, curseY, curseX);
@@ -253,27 +287,27 @@ void createLabyrinth(){
         delwin(labrnthWIN);
         return;
 
-      case 'f':
+      case 'z':
         labyrinth.tile[curseY][curseX].type = FLOOR;
         saved = FALSE;
         break;
 
-      case 'w':
+      case 'x':
         labyrinth.tile[curseY][curseX].type = WALL;
         saved = FALSE;
         break;
 
-      case 'p':
+      case 'c':
         labyrinth.tile[curseY][curseX].type = PIT;
         saved = FALSE;
         break;
 
-      case 't':
+      case 'v':
         labyrinth.tile[curseY][curseX].type = TRAP;
         saved = FALSE;
         break;
       
-      case 's':
+      case '-':
         if(name[0] == '\0'){
           // ask with what name to save
         } // pretend I use save(name which saves to a file)
@@ -287,7 +321,7 @@ void renderLabrnth(WINDOW *windw, maze_t *labyrinth, int curseX, int curseY, int
   editorTILE_t currntTile; int colorPair = 0;
   for(int y = *viewY; y < (VIEW_HEIGHT + *viewY); y++){
     for(int x = *viewX; x < (VIEW_WIDTH + *viewX); x++){
-      currntTile.type = labyrinth->tile[y][x].type;
+      currntTile.type = labyrinth -> tile[y][x].type;
       switch(currntTile.type){
         case FLOOR: colorPair = Floor; break;
         case WALL : colorPair = Wall ; break;
@@ -334,6 +368,27 @@ void updView(int *viewY, int *viewX, int curseY, int curseX){
   } if(curseY <= *viewY){
     *viewY = curseY;
   }
+}
+
+void makeLegend(WINDOW *windw){
+/*
+                    - -- -- --- { LEGEND } --- -- -- -
+  MOVE CURSOR [::] WITH [ARROW KEYS]  MOVE SCREEN WITH [CTRL + ARROW KEYS]
+
+   Z: place Floor [FLOOR TILE COLOR]   C: place Trap [TRAP TILE COLOR]
+
+   X: place Wall [WALL  TILE  COLOR]   V: place Pit [PIT  TILE  COLOR]
+*/
+  box(windw, 0, 0);
+  mvwprintw(windw, 1, 10, "- -- -- --- { LEGEND } --- -- -- -");
+  mvwprintw(windw, 2, 6, "    MOVE CURSOR [::] WITH [ARROW KEYS]");
+  mvwprintw(windw, 4, 5, "Z: place Floor []          C: place Trap []");
+  mvwprintw(windw, 5, 5, "ESC: Quit                  '-': Save labyrinth");
+  mvwprintw(windw, 6, 5, "X: place Wall  []          V: place Pit  []");
+  mvwprintw(windw, 8, 6, "   MOVE  SCREEN  WITH  [W   A   S   D]");
+  mvwprintpx(windw, 4, 10, Floor, ' '); mvwprintpx(windw, 4, 23, Trap, ' ');
+  mvwprintpx(windw, 6, 10, Wall,  ' '); mvwprintpx(windw, 6, 23,  Pit,  ' ');
+  wrefresh(windw);
 }
 
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
