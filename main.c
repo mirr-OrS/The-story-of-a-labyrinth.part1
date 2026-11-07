@@ -387,9 +387,12 @@ void makeLegend(WINDOW *windw){
 
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
   // does nothing and dies
-  // killed by Shirley
+  // killed by Shirley ;)
   // good job Shirley... I think, just don't kill all functions
-  // (-_-')
+  // OKAY?! (O_O')
+  // you should revive it btw, now that you finished the Editor ;)
+  // this is probably the longest part AND with the most HARDCODED things
+  // i would have prefered to just make it another (math + code)*functions thing like generateMap() TwT
 }
 
 /*
