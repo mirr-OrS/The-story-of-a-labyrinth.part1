@@ -220,11 +220,11 @@ void createLabyrinth(){
     refresh();
     return;
   }
-  makeLegend(legend);
+
   keypad(labrnthWIN, TRUE);
   int ch = 0; short unsigned int saved = FALSE; char name[64] = "\0";
   while(TRUE){
-
+    makeLegend(legend);
     renderLabrnth(labrnthWIN, &labyrinth, curseX, curseY, &viewX, &viewY);
     ch = wgetch(labrnthWIN);
 
@@ -274,6 +274,7 @@ void createLabyrinth(){
           // ARE YOU SURE SHIRLEY?
         }
         delwin(labrnthWIN);
+        delwin(legend);
         return;
 
       case 'z':
@@ -325,9 +326,10 @@ void renderLabrnth(WINDOW *windw, maze_t *labyrinth, int curseX, int curseY, int
       screenX++;
       if(screenX == VIEW_WIDTH){
         screenX = 0; screenY++;
-      } wrefresh(windw);
+      } 
     }
   }
+  wrefresh(windw);
 /*
 ----{ NOTES ON VIEWPORT }----
 
