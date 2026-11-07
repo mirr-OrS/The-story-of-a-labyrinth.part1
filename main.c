@@ -26,11 +26,6 @@
 #define Pit 3
 #define Trap 4
 
-#define CTRL_UP    600
-#define CTRL_DOWN  601
-#define CTRL_RIGHT 602
-#define CTRL_LEFT  603
-
 typedef enum{
   FLOOR,
   WALL,
@@ -65,12 +60,6 @@ void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY);
 int main(){
   printf("\033[?25l"); // hide cursor
   initscr();
-
-  define_key("\033[1;5A", CTRL_UP);
-  define_key("\033[1;5B", CTRL_DOWN);
-  define_key("\033[1;5C", CTRL_RIGHT);
-  define_key("\033[1;5D", CTRL_LEFT);
-
   if(has_colors() == FALSE){
     endwin();
     printf("This terminal does not support colors! \033[?25h \n");
