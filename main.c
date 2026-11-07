@@ -221,7 +221,7 @@ void createLabyrinth(){
   int ch = 0; short unsigned int saved = FALSE; char name[64] = "\0";
   while(TRUE){
 
-
+    renderLabrnth(labrnthWIN, &labyrinth, curseX, curseY, &viewX, &viewY);
     ch = wgetch(labrnthWIN);
 
     switch(ch){
@@ -274,7 +274,6 @@ void createLabyrinth(){
         } // pretend I use save(name which saves to a file)
         saved = TRUE;
     }
-    renderLabrnth(labrnthWIN, &labyrinth, curseX, curseY, &viewX, &viewY);
   }
 }
 
