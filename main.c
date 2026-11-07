@@ -48,7 +48,7 @@ typedef struct{
 // each tile is 6x12
 
 void renderLabrnth(WINDOW *windw, maze_t *labyrinth, int curseX, int curseY, int *viewX, int *viewY);
-void createLabyrinth();
+void createLabyrinth(void);
 int mainMenu(WINDOW *windw);
 void updView(int *viewY, int *viewX, int curseY, int curseX);
 void mvwprintpx(WINDOW *windw, int x, int y, int colorPair, char decor);
@@ -217,8 +217,14 @@ void createLabyrinth(){
   int curseX = 0, curseY = 0, viewX = 0, viewY = 0;
   WINDOW *labrnthWIN = newwin(16, 64, 0, 0); // newwin(height, width, starty, startx)
   WINDOW *legend = newwin(10, 56, 16, 4);
-  if(labrnthWIN == NULL || legend == NULL){
+  if(labrnthWIN == NULL){
     printw("Failed creating the new window... XP !"); // XP is closed eyes with tongue out, like dead cartoon characters
+    delwin(legend);
+    refresh();
+    return;
+  } if(legend == NULL){
+    printw("Failed creating the new window... XP !"); // XP is closed eyes with tongue out, like dead cartoon characters
+    delwin(labrnthWIN);
     refresh();
     return;
   }
@@ -237,7 +243,7 @@ void createLabyrinth(){
         break;
 
       case 's':
-        if(viewY < (EDITOR_SIZE - 1)) viewY++;
+        if(viewY < (EDITOR_SIZE - VIEW_HEIGHT)) viewY++;
         updView(&viewY, &viewX, curseY, curseX);
         break;
 
@@ -247,7 +253,7 @@ void createLabyrinth(){
         break;
 
       case 'd':
-        if(viewX < (EDITOR_SIZE - 1)) viewX++;
+        if(viewX < (EDITOR_SIZE - VIEW_WIDTH)) viewX++;
         updView(&viewY, &viewX, curseY, curseX);
         break;
 
@@ -393,6 +399,12 @@ void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
   // you should revive it btw, now that you finished the Editor ;)
   // this is probably the longest part AND with the most HARDCODED things
   // i would have prefered to just make it another (math + code)*functions thing like generateMap() TwT
+  // I'll make save() to export labyrinths :)
+  // no you won't, you still have to make the format first, *WITH YOUR FREND* ;)
+  // why... why do you wink at me EVERY TIME raaaaahhhhhhhhhhhh :3 meow
+  // bcz yes ^v^ ;)
+  // *clears throat* I CAST MANUAL BREATHING >;)
+  // I hate you :(
 }
 
 /*
