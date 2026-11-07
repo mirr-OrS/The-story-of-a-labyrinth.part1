@@ -26,5 +26,5 @@ TODO:
  - [ ] Move
  - [ ] Spawn NPCs
  - [ ] Talk with NPCs
- - [ ] Labyrinth creator & editor
+ - [x] Labyrinth creator & editor
  - [ ] Format, store and load labyrinths in the *.lost extension
