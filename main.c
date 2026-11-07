@@ -50,6 +50,7 @@ typedef struct{
 void renderLabrnth(WINDOW *windw, maze_t *labyrinth, int curseX, int curseY, int *viewX, int *viewY);
 void createLabyrinth();
 int mainMenu(WINDOW *windw);
+void updView(int *viewY, int *viewX, int curseY, int curseX);
 void mvwprintpx(WINDOW *windw, int x, int y, int colorPair, char decor);
 void mvwprintcrs(WINDOW *windw, int y, int x, int colorPair);
 void generateMap(unsigned char (*worldMap)[MAP_SIZE]);
@@ -227,18 +228,22 @@ void createLabyrinth(){
     switch(ch){
       case KEY_UP:
         if(curseY > 0) curseY--;
+        updView(&viewY, &viewX, curseY, curseX);
         break;
 
       case KEY_DOWN:
         if(curseY < (EDITOR_SIZE - 1)) curseY++;
+        updView(&viewY, &viewX, curseY, curseX);
         break;
 
       case KEY_LEFT:
         if(curseX > 0) curseX--;
+        updView(&viewY, &viewX, curseY, curseX);
         break;
 
       case KEY_RIGHT:
         if(curseX < (EDITOR_SIZE - 1)) curseX++;
+        updView(&viewY, &viewX, curseY, curseX);
         break;
 
       case '\033':
@@ -289,10 +294,11 @@ void renderLabrnth(WINDOW *windw, maze_t *labyrinth, int curseX, int curseY, int
         case PIT  : colorPair = Pit  ; break;
         case TRAP : colorPair = Trap ; break;
       }
-      mvwprintpx(windw, screenY, screenX, colorPair, ' ');
-      if(x + *viewX == curseX && y + *viewY == curseY){
+      
+      if(x == curseX && y == curseY){
         mvwprintcrs(windw, screenY, screenX, colorPair);
-      }
+      } else mvwprintpx(windw, screenY, screenX, colorPair, ' ');
+
       screenX++;
       if(screenX == VIEW_WIDTH){
         screenX = 0; screenY++;
@@ -315,6 +321,19 @@ formulas are: screenX = curseX - viewX
 when drawing stuff on terminal through screenX/Y remember to do screenX * 2
 because YOU said 2 cells == one pixel :P
 */
+}
+
+void updView(int *viewY, int *viewX, int curseY, int curseX){
+  if(curseX >= (*viewX + VIEW_WIDTH - 1)){
+    *viewX = curseX - VIEW_WIDTH + 1;
+  } if(curseX <= *viewX){
+    *viewX = curseX;
+  }
+  if(curseY >= (*viewY + VIEW_HEIGHT - 1)){
+    *viewY = curseY - VIEW_HEIGHT + 1;
+  } if(curseY <= *viewY){
+    *viewY = curseY;
+  }
 }
 
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
