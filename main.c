@@ -142,7 +142,9 @@ void generateMap(unsigned char (*worldMap)[MAP_SIZE]){
 
 int mainMenu(WINDOW *windw){
   keypad(windw, TRUE);
-  //box(windw, 0, 0);
+  // box(windw, 0, 0); this has been sitting here unused for like the last month
+  // do you have any intention on deleting these comments >:(
+  // apparently not, it also seems I'm half crazy, been talking to code
   wattron(windw, COLOR_PAIR(5));
   /*
      — — <( The Story of a Labyrinth )> — —
@@ -162,7 +164,7 @@ int mainMenu(WINDOW *windw){
   mvwprintw(windw, 3, 1, ">> "); wattron(windw, A_REVERSE | A_BOLD); wprintw(windw, choices[MAX_MENU_CHOICES]); wattroff(windw, A_REVERSE | A_BOLD);
   mvwprintw(windw, 5, 4, "Labyrinth editor");
   mvwprintw(windw, 7, 4, "Quit");
-  wrefresh(windw);
+  wrefresh(windw); //there's 5 money under the mattress, for when you need it
   while(ch != '\n'){
     ch = wgetch(windw);
     switch(ch){
@@ -272,7 +274,7 @@ void createLabyrinth(){
       case '\033':
         if(!saved){ // if not saved
           // ARE YOU SURE SHIRLEY?
-        }
+        } // I do not know who is Shirley
         delwin(labrnthWIN);
         delwin(legend);
         return;
