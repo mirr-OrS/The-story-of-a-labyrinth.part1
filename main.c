@@ -382,10 +382,14 @@ void makeLegend(WINDOW *windw){
   mvwprintpx(windw, 4, 10, Floor, ' '); mvwprintpx(windw, 4, 23, Trap, ' ');
   mvwprintpx(windw, 6, 10, Wall,  ' '); mvwprintpx(windw, 6, 23,  Pit,  ' ');
   wrefresh(windw);
-}
+} // Shirley was here
+// do I... do I have a ghost living in my code by chance?
 
 void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
   // does nothing and dies
+  // killed by Shirley
+  // good job Shirley... I think, just don't kill all functions
+  // (-_-')
 }
 
 /*
