@@ -216,13 +216,13 @@ void createLabyrinth(){
   maze_t labyrinth = {0}; // 0 = floor, 1 = wall, wait, I'll make an enum... (it was a short unsigned int array before)
   int curseX = 0, curseY = 0, viewX = 0, viewY = 0;
   WINDOW *labrnthWIN = newwin(16, 64, 0, 0); // newwin(height, width, starty, startx)
-  WINDOW *legend = newwin(10, 56, 16, 4);
   if(labrnthWIN == NULL){
     printw("Failed creating the new window... XP !"); // XP is closed eyes with tongue out, like dead cartoon characters
-    delwin(legend);
     refresh();
     return;
-  } if(legend == NULL){
+  }
+  WINDOW *legend = newwin(10, 56, 16, 4);
+  if(legend == NULL){
     printw("Failed creating the new window... XP !"); // XP is closed eyes with tongue out, like dead cartoon characters
     delwin(labrnthWIN);
     refresh();
@@ -397,7 +397,7 @@ void renderWorld(unsigned char (*worldMap)[MAP_SIZE], int playerX, int playerY){
   // good job Shirley... I think, just don't kill all functions
   // OKAY?! (O_O')
   // you should revive it btw, now that you finished the Editor ;)
-  // this is probably the longest part AND with the most HARDCODED things
+  // this is probably the longest part AND with the biggest amount of HARDCODED things
   // i would have prefered to just make it another (math + code)*functions thing like generateMap() TwT
   // I'll make save() to export labyrinths :)
   // no you won't, you still have to make the format first, *WITH YOUR FREND* ;)
